@@ -1,0 +1,6 @@
+{
+    "parent": "vashcraft:item/standard_item",
+    "textures": {
+        "layer0": "vashcraft:items/bananabell"
+    }
+}
