@@ -1,6 +1,6 @@
 package x.studiovash.vashcraft.items;
-
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -19,13 +19,20 @@ public class Bananabell extends Item {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+	public ItemStack onItemRightClick(ItemStack is, World world, EntityPlayer player) {
 		
-		BlockPos bp = playerIn.getBedLocation();
-		
-		playerIn.setPosition(bp.getX(), bp.getY(), bp.getZ());
-		
-		return itemStackIn;
+		if (world.isRemote) {
+            return is;
+        }
+        
+        BlockPos bp = EntityPlayer.getBedSpawnLocation(world, player.getBedLocation(), false);
+        if(bp != null) {
+            ((EntityPlayerMP)player).playerNetServerHandler.setPlayerLocation((float)bp.getX() + 0.5F, (float)bp.getY(), (float)bp.getZ() + 0.5F, 0.0F, 0.0F);
+        }
+        
+        is.stackSize--;
+        
+        return is;
 	}
 	
 	
